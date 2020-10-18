@@ -1,17 +1,27 @@
-import * as Y from 'yjs';
 import * as React from 'react';
 import styled from 'styled-components';
+
+import { Doc } from '../Doc';
+import { Selection } from '../Selection';
+import { action } from '../action';
 
 /* ActionController */
 const ActionControllerWrapper = styled.div``;
 
-function ActionController() {
+function ActionController(props: { doc: Doc; selection: Selection }) {
+  const doc = props.doc;
+  const selection = props.selection;
+
+  const onAddItemButtonClick = () => {
+    action.addItem(doc, selection);
+  };
+
   return (
     <ActionControllerWrapper>
       <h2>Action Controller</h2>
       <ul>
         <li>
-          <button onClick={() => console.log('ADD ITEM')}>ADD ITEM</button>
+          <button onClick={onAddItemButtonClick}>ADD ITEM</button>
         </li>
       </ul>
     </ActionControllerWrapper>
@@ -25,7 +35,7 @@ const TreeViewerWrapper = styled.div`
   }
 `;
 
-function TreeViewer(props: { doc: Y.Doc }) {
+function TreeViewer(props: { doc: Doc; selection: Selection }) {
   const doc = props.doc;
 
   return (
@@ -51,13 +61,14 @@ const DebugHelperWrapper = styled.div`
   }
 `;
 
-export function DebugHelper(props: { doc: Y.Doc }) {
+export function DebugHelper(props: { doc: Doc; selection: Selection }) {
   const doc = props.doc;
+  const selection = props.selection;
 
   return (
     <DebugHelperWrapper>
-      <ActionController doc={doc} />
-      <TreeViewer doc={doc} />
+      <ActionController doc={doc} selection={selection} />
+      <TreeViewer doc={doc} selection={selection} />
     </DebugHelperWrapper>
   );
 }
