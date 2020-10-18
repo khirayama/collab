@@ -3,10 +3,21 @@
 - なぜ子要素をもつ形じゃなくてインデント方式にしたの？
   - 結果的にドキュメントという形をとるデータ形式だと判断
     - 「タスク」のようにドキュメントという形ではなく抽象化できたら違う判断だったかも
+- なぜItemをclassにしてないの？
+  - Itemを作ってしまうとyjsとの相性が悪いから
+  - HTMLと違い、Itemが子要素を持つ構造じゃないためItemにtraverseさせることがない
 
 - Document
-- Selection
-- action(doc, selection)
   - factory
   - transform(doc)
   - traverse(doc)
+- Item
+- Selection
+- action(doc, selection)
+
+## TODO
+
+- Item
+  - Y.Map Item
+    - Y.Map<Data>
+これにちゃんと名前つける。
