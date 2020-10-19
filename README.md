@@ -17,7 +17,7 @@
 
 ## TODO
 
-- Item
-  - Y.Map Item
-    - Y.Map<Data>
-これにちゃんと名前つける。
+- Item = Item = item
+  - Y.Map Item = ItemData = itemData
+    - Y.Map<Data> = ItemDataContent = itemDataContent
+  - toJSON = ItemDataContent = itemDataContent
