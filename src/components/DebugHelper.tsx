@@ -6,7 +6,11 @@ import { Selection } from '../Selection';
 import { action } from '../action';
 
 /* ActionController */
-const ActionControllerWrapper = styled.div``;
+const ActionControllerWrapper = styled.div`
+  & {
+    flex: 1;
+  }
+`;
 
 function ActionController(props: { doc: Doc; selection: Selection }) {
   const doc = props.doc;
@@ -18,7 +22,7 @@ function ActionController(props: { doc: Doc; selection: Selection }) {
 
   return (
     <ActionControllerWrapper>
-      <h2>Action Controller</h2>
+      <h2>Actions</h2>
       <ul>
         <li>
           <button onClick={onAddItemButtonClick}>ADD ITEM</button>
@@ -30,6 +34,10 @@ function ActionController(props: { doc: Doc; selection: Selection }) {
 
 /* TreeViewer */
 const TreeViewerWrapper = styled.div`
+  & {
+    flex: 1;
+  }
+
   div {
     white-space: pre-wrap;
   }
@@ -46,18 +54,42 @@ function TreeViewer(props: { doc: Doc; selection: Selection }) {
   );
 }
 
+/* SelectionViewer */
+const SelectionViewerWrapper = styled.div`
+  & {
+    flex: 1;
+  }
+
+  div {
+    white-space: pre-wrap;
+  }
+`;
+
+function SelectionViewer(props: { doc: Doc; selection: Selection }) {
+  const selection = props.selection;
+
+  return (
+    <SelectionViewerWrapper>
+      <h2>Selection Viewer</h2>
+      <div>{JSON.stringify(selection.toJSON(), null, 2)}</div>
+    </SelectionViewerWrapper>
+  );
+}
+
 /* DebugHelper */
 const DebugHelperWrapper = styled.div`
   & {
+    display: flex;
     position: fixed;
     right: 0;
     top: 0;
-    padding: 24px;
-    background: rgba(0, 0, 0, 0.7);
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.45);
     color: #fff;
-    max-width: calc(100% / 3);
+    max-width: calc(100% * 2 / 3);
     height: 100%;
     word-wrap: break-word;
+    overflow: scroll;
   }
 `;
 
@@ -68,6 +100,7 @@ export function DebugHelper(props: { doc: Doc; selection: Selection }) {
   return (
     <DebugHelperWrapper>
       <ActionController doc={doc} selection={selection} />
+      <SelectionViewer doc={doc} selection={selection} />
       <TreeViewer doc={doc} selection={selection} />
     </DebugHelperWrapper>
   );
