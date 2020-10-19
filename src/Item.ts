@@ -6,7 +6,7 @@ import { Doc } from './Doc';
 export class ParagraphItem {
   public doc: Doc | null = null;
 
-  public data: Y.Map<ItemData>;
+  private data: Y.Map<ItemDataContent>;
 
   constructor(data?: ParagraphItem['data']) {
     this.data = data
@@ -21,12 +21,32 @@ export class ParagraphItem {
         );
   }
 
-  public after(item: Item) {
-    console.log(item);
+  public get(key: string) {
+    return this.data.get(key);
+  }
+
+  public getData() {
+    return this.data;
+  }
+
+  public after(item: Item): void {
+    const currentItemData = this.toJSON();
+    const itemsData = this.doc.itemsData();
+    for (let i = 0; i < itemsData.length; i += 1) {
+      const itemData: Y.Map<ItemDataContent> = itemsData.get(i);
+      const itemDataContent: ItemDataContent = itemData.toJSON();
+      if (itemDataContent.id === currentItemData.id) {
+        itemsData.insert(i + 1, [item.data]);
+      }
+    }
+  }
+
+  public toJSON(): ItemDataContent {
+    return this.data.toJSON();
   }
 }
 
-export type ItemData = {
+export type ItemDataContent = {
   id: string;
   indent: number;
   type: 'paragraph';
