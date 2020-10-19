@@ -4,9 +4,13 @@ import { Selection } from './Selection';
 
 export const action = {
   addItem: (doc: Doc, selection: Selection) => {
+    const selectionDataContent = selection.toJSON();
+
     const item: Item = doc.createItem('paragraph');
-    const currentItem = doc.find(/* by selection */);
-    currentItem.after(item);
+    if (selectionDataContent.range) {
+      const currentItem = doc.find(selection.data.range.anchor.id);
+      currentItem.after(item);
+    }
     // const data = doc.getMap('data');
     // let items: Y.Array<any> | null = data.get('items');
     // if (items === null) {
