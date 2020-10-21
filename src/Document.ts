@@ -1,19 +1,22 @@
 import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 
+import { User } from './User';
+import { Selection } from './Selection';
 import { ParagraphItem, Item, ItemType, ItemDataContent } from './Item';
 
 const itemMap = {
   paragraph: ParagraphItem,
 };
 
-export class Doc {
+export class Document {
+  private user: User;
+
   private data: Y.Doc;
 
-  constructor() {
-    this.data = this.createDoc();
-    const item = this.createItem('paragraph');
-    this.append(item);
+  constructor(user: User) {
+    this.user = user;
+    this.data = new Y.Doc();
 
     this.connect();
   }
@@ -86,6 +89,11 @@ export class Doc {
   }
 
   /* Methods */
+  public init() {
+    const item = this.createItem('paragraph');
+    this.append(item);
+  }
+
   public on(event: string, callback: Function) {
     this.data.on(event, callback);
   }
@@ -95,7 +103,7 @@ export class Doc {
   }
 
   private connect(): void {
-    const wsProvider = new WebsocketProvider('ws://localhost:5001', 'my-roomname', this.data);
+    const wsProvider = new WebsocketProvider('ws://localhost:5001', 'goodwriting', this.data);
     wsProvider.on('status', (event: any) => {
       console.log(event.status);
     });
