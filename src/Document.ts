@@ -9,16 +9,53 @@ const itemMap = {
   paragraph: ParagraphItem,
 };
 
+/*
+ * XXXData: yjsを使ったデータ構造
+ * XXXDataJSON: toJSONしたデータ
+ */
+type SelectionData = {
+  compositionText: string;
+  range: {
+    anchor: {
+      id: string;
+      offset: Y.RelativePosition;
+    };
+    focus: {
+      id: string;
+      offset: Y.RelativePosition;
+    };
+  } | null;
+};
+
+type ItemData = {
+  id: string;
+  type: string;
+  text: Y.Text;
+  items: Y.Array<ItemData>;
+};
+
+type DocumentData = {
+  selection: {
+    [id: string]: SelectionData;
+  };
+  items: Y.Array<ItemData>;
+};
+
 export class Document {
   private user: User;
 
-  private data: Y.Doc;
+  private data: Y.Doc = new Y.Doc();
 
   constructor(user: User) {
     this.user = user;
     this.data = new Y.Doc();
 
     this.connect();
+  }
+
+  /* Selection */
+  public getSelection(): Selection {
+    return new Selection();
   }
 
   /* Factory */
@@ -48,20 +85,6 @@ export class Document {
     const data = this.data.getMap('data');
     const itemsData: Y.Array<Y.Map<ItemDataContent>> = data.get('items');
     return itemsData;
-  }
-
-  public _first(): Item | null {
-    const data = this.data.getMap('data');
-    const itemsData: Y.Array<Y.Map<ItemDataContent>> = data.get('items');
-    const itemData: Y.Map<ItemDataContent> | null = itemsData.get(0) || null;
-    if (itemData) {
-      const itemDataContent = itemData.toJSON();
-      const ItemClass = itemMap[itemDataContent.type];
-      const itm = new ItemClass(itemData);
-      itm.doc = this;
-      return itm;
-    }
-    return null;
   }
 
   public find(itemId: string): Item | null {
