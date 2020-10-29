@@ -1,8 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { Doc } from '../Doc';
-import { Selection } from '../Selection';
+import { Document } from '../Document';
 import { action } from '../action';
 
 /* ActionController */
@@ -12,12 +11,11 @@ const ActionControllerWrapper = styled.div`
   }
 `;
 
-function ActionController(props: { doc: Doc; selection: Selection }) {
+function ActionController(props: { doc: Document }) {
   const doc = props.doc;
-  const selection = props.selection;
 
   const onAddItemButtonClick = () => {
-    action.addItem(doc, selection);
+    action.addItem(doc);
   };
 
   return (
@@ -43,7 +41,7 @@ const TreeViewerWrapper = styled.div`
   }
 `;
 
-function TreeViewer(props: { doc: Doc; selection: Selection }) {
+function TreeViewer(props: { doc: Document }) {
   const doc = props.doc;
 
   return (
@@ -65,8 +63,8 @@ const SelectionViewerWrapper = styled.div`
   }
 `;
 
-function SelectionViewer(props: { doc: Doc; selection: Selection }) {
-  const selection = props.selection;
+function SelectionViewer(props: { doc: Document }) {
+  const selection = props.doc.getSelection();
 
   return (
     <SelectionViewerWrapper>
